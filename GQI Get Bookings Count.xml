@@ -19,7 +19,6 @@
 	<Script>
 		<Exe id="1" type="csharp">
 			<Value><![CDATA[[Project:GQI Get Bookings Count_1]]]></Value>
-			<!--<Param type="debug">true</Param>-->
 			<Message></Message>
 			<Param type="preCompile">true</Param>
 			<Param type="libraryName">GQI_GetBookingsCount</Param>

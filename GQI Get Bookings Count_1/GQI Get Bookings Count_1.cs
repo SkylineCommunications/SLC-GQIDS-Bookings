@@ -59,18 +59,18 @@ namespace GQI_Get_Bookings_Count_1
     [GQIMetaData(Name = "Get Bookings Count")]
     public class DataSource : IGQIDataSource, IGQIInputArguments
     {
-        private GQIStringArgument elasticUriArgument = new GQIStringArgument("IP address of Elastic node")
+        private readonly GQIStringArgument elasticUriArgument = new GQIStringArgument("IP address of Elastic node")
         {
             IsRequired = true,
         };
 
-        private GQIDateTimeArgument startDateArgument = new GQIDateTimeArgument("Start Date")
+        private readonly GQIDateTimeArgument startDateArgument = new GQIDateTimeArgument("Start Date")
         {
             IsRequired = false,
             DefaultValue = DateTime.MinValue,
         };
 
-        private GQIDateTimeArgument endDateArgument = new GQIDateTimeArgument("End Date")
+        private readonly GQIDateTimeArgument endDateArgument = new GQIDateTimeArgument("End Date")
         {
             IsRequired = false,
             DefaultValue = DateTime.MaxValue,
@@ -111,7 +111,7 @@ namespace GQI_Get_Bookings_Count_1
         {
             int bookingsCount = ElasticSearch
                 .GetBookings(elasticUri)
-                .Where(x =>
+                .Count(x =>
                 {
                     if (x.CustomData.End < this.startDate)
                     {
@@ -124,8 +124,7 @@ namespace GQI_Get_Bookings_Count_1
                     }
 
                     return true;
-                })
-                .Count();
+                });
 
             var rows = new List<GQIRow>();
             var cell = new GQICell[]

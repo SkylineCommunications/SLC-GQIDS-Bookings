@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using Elasticsearch.Net;
     using Nest;
@@ -28,7 +29,7 @@
                 var documents = ElasticSearch.GetAllDocumentsInIndex<object>(elasticClient, index, scrollTimeout, scrollSize);
                 foreach (var document in documents)
                 {
-                    var obj = (T)JsonConvert.DeserializeObject<T>(document.ToString());
+                    var obj = JsonConvert.DeserializeObject<T>(document.ToString());
                     yield return obj;
                 }
             }
@@ -44,7 +45,7 @@
                 .Scroll(scrollTimeout));
 
             if (!initialResponse.IsValid || string.IsNullOrEmpty(initialResponse.ScrollId))
-                throw new Exception(initialResponse.ServerError.Error.Reason);
+                throw new IOException(initialResponse.ServerError.Error.Reason);
 
             foreach (var document in initialResponse.Documents)
             {
